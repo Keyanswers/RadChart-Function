@@ -11,7 +11,7 @@ RadChart=function(df,Ftext,col1,col2,Vec,MV){
   ifelse(dim(subset(installed.packages(),
                     installed.packages()[,1]=="Rttf2pt1" & installed.packages()[,3]=="1.3.8"))[1]>0,
          require("Rttf2pt1"),remotes::install_version("Rttf2pt1", version="1.3.8"))
-  ifelse(length(fonts())>0, print("Let's work and select your favorite font"),font_import())
+  ifelse(length(fonts())>0, print("Plotting"),font_import())
   loadfonts(device="win",quiet=TRUE)
   
   if (is.null(dim(df))){
