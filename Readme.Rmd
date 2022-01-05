@@ -1,0 +1,324 @@
+---
+title: "Readme RadChart Function"
+author: "Juan Carlos Rubio Polania"
+date: "05/01/2022"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE, error=TRUE, warning=FALSE}
+knitr::opts_chunk$set(echo = FALSE, error= TRUE, warning=FALSE)
+``` 
+
+# RadChart
+
+RadChart function provides three different ways to plot radar charts. The first option allows plot vector values and has a mandatory argument "Vec" that provides the main title. The second option provides a way to plot multiple radar charts from data tables, whereby the graphic function par could be useful together with the argument mfrow (to set the rows and columns of the composed figure). Those above options require the use of col1 and col2 arguments; however, in the third option, col2 must be absent, because the colors are provided automatically. This last option has "MV" as a mandatory argument that determines the main title, and provides a single radar chart with at least three variables, samples, or stations. 
+
+### Function Arguments
+
+* df =  It is the data frame with stations in columns and the variables in rows. Also, this argument could be a vector.
+* Ftext = Selected font for the labels, numbers, and titles. 
+* col1 = Selected color for radar chart grid.
+* col2 = Selected color for filling the polygons got by dots union, this argument is unused with the multivariate version           of RadChart function.
+* Vec = This is an argument exclusive and mandatory to do radar charts from vectors, it provides the main title. 
+* MV = This argument is an exclusive and mandatory of the multivariate version of this function, and provides the main            title.
+
+Note: The RadChart function shows an error "the argument "df" is absent, no default value in r" when it runs empty; however, the function works correctly.
+
+```{r function, include=FALSE, error = TRUE}
+RadChart=function(df,Ftext,col1,col2,Vec,MV){
+  
+  pck=c("fmsb","extrafont","extrafontdb","scales","caret")
+  if (length(pck[pck %in% installed.packages()])>0){
+    lapply(pck,require,character.only=TRUE)
+  } else {
+    install.packages(c(pck))
+    lapply(pck,require,character.only=TRUE)
+  }
+  
+  ifelse(dim(subset(installed.packages(),
+                    installed.packages()[,1]=="Rttf2pt1" & installed.packages()[,3]=="1.3.8"))[1]>0,
+         require("Rttf2pt1"),remotes::install_version("Rttf2pt1", version="1.3.8"))
+  ifelse(length(fonts())>0, print("Ready to work"),font_import())
+  loadfonts(device="win",quiet=TRUE)
+  
+  
+  if (is.null(dim(df))){
+    Max=rep(max(df),length(df))
+    Min=rep(min(df),length(df))
+    df1=data.frame(rbind(Max,Min,df))
+    
+    cls1=round(seq(round(min(df),digits=2),round(max(df),digits=2),length.out=5),digits=2)
+    #rownames(df1)[3]=deparse(substitute("df"))
+    #rownames(df1)=c("Max","Min",rownames(df1)[3])
+    
+    fn=par(family=Ftext)
+    radarchart(df1,
+               title=Vec,
+               axislabcol="black",
+               cglcol=col1,
+               pcol=col2,pfcol=scales::alpha(col2,0.4),
+               cglty=7, cglwd=1,vlabels=colnames(df1), vlcex=1.5,plwd=1.3,calcex=1.5,axistype=1,
+               caxislabels = cls1, cex.main=2.3)
+    par(fn)
+    
+  }  else if (missing(MV) && missing(Vec)){
+    Max=c();Min=c()
+    for(i in colnames(df)){
+      Max[i]=max(df[,i])
+      Min[i]=min(df[,i])
+    }
+    Max
+    Min
+    
+    DF=list()
+    for(i in seq_along(colnames(df))){
+      DF[[i]]=data.frame(rbind(rep(Max[i],dim(df)[1]),rep(Min[i],dim(df)[1]),df[1:(dim(df)[1]),i]))
+      colnames(DF[[i]])=rownames(df)
+      rownames(DF[[i]])=c("Max","Min",colnames(df)[i])
+      
+    }
+    DF 
+    
+    cls=list()
+    for(i in colnames(df)){
+      cls[[i]]=round(seq(round(min(df[,i]),digits=2),round(max(df[,i]),digits=2),length.out=5),digits=2)
+    }
+    
+    # device .... there are multiple options 
+    
+    ifelse(missing(col2),2:dim(DD)[1],col2)
+    
+    par(mar=c(1.5,0,2.5,0))
+    for(i in seq_along(DF)){
+      fn=par(family=Ftext)
+      radarchart(DF[[i]],
+                 title=rownames(DF[[i]])[3],
+                 axislabcol="black",
+                 cglcol=col1,
+                 pcol=col2,pfcol=scales::alpha(col2,0.4),
+                 cglty=7, cglwd=1, vlcex=1,plwd=1.3,calcex=0.9,axistype=1,
+                 caxislabels = cls[[i]],cex.main=2.3)
+      par(fn)
+    }
+    
+  } else {
+    R=preProcess(df, method="range")
+    df=predict(R,df)
+    df=as.data.frame(df)
+    Max=c();Min=c()
+    
+    for(i in colnames(df)){
+      Max[i]=max(df[,i])
+      Min[i]=min(df[,i])
+      DD=rbind(Max,Min,df)
+      rownames(DD)[1:2]=c("Max","Min")
+      cls=round(seq(min(DD),max(DD),length.out=5), digits=2)
+    }
+    
+    fn=par(family=Ftext)
+    radarchart(DD,
+               title= MV,
+               axislabcol= "black",
+               pcol= 2:dim(DD)[1],
+               cglcol=col1,
+               pfcol=scales::alpha(2:dim(DD)[1],0.4),
+               cglty=7,cglwd=2,vlcex=2,plty=1,
+               plwd=3,calcex=1, axistype=1,
+               caxislabels=cls,cex.main=2.3)
+    
+    legend("topright",
+           legend=paste(rownames(DD)[-(1:2)]),
+           bty="n",
+           col=2:dim(DD)[1],
+           pch=19,
+           cex=2,
+           pt.cex=2)
+    par(fn)
+  }
+}
+save(RadChart,file="RadChart.Rdata")
+load("RadChart.Rdata") 
+```
+
+The following lines are examples of the different radar chart got from the datasets available as examples in the global environment of r.
+
+### Loading data to plotting
+
+#### Dataset OrchardSprays (it has data of Potency of Orchard Sprays)
+
+
+```{r}
+data(OrchardSprays);
+knitr::kable(
+  head(OrchardSprays), 
+  caption = "Data frame of OrchardSprays dataset"
+)
+```
+```{r}
+fonts()
+```
+
+Here was created the vector using few data of decrease column of OrchardSprays data set.
+
+```{r}
+par(mfrow=c(1,1))
+decrease=OrchardSprays$decrease[1:6]
+decrease
+```
+```{r}
+RadChart(decrease,"Perpetua Titling MT","black","dodgerblue",Vec="Decrease")
+#dev.copy(device=jpeg,filename="OrchardSpraysUni.jpeg",width=800,height=800);
+#dev.off()
+
+```
+
+```{r}
+par(mfrow=c(2,2))
+RadChart(OrchardSprays[c(1:3,9:15),1:3],"Niagara Engraved","black","brown4")
+#dev.copy(device=jpeg,filename="OrchardSpraysBi.jpeg",width=800,height=800);
+#dev.off()
+```
+
+
+```{r}
+par(mfrow=c(1,1))
+RadChart(OrchardSprays[c(1:2,9:11),1:3],"Malgun Gothic","black",MV="OrchardSprays Dataset")
+#dev.copy(device=jpeg,filename="OrchardSpraysMulti.jpeg",width=800,height=800);
+#dev.off()
+```
+
+#### Dataset Orange (it has data about Growth of Orange Trees)
+
+In this step to show the vector option the first column of Orange dataset was converted from factor to numeric.
+```{r}
+data(Orange);
+Orange$NTree=as.numeric(as.character(Orange$Tree))
+```
+
+```{r}
+knitr::kable(
+  head(Orange), 
+  caption = "Data frame of Orange with transformed data in the NTree column"
+)
+```
+
+
+```{r}
+par(mfrow=c(1,1))
+nt=Orange$NTree[c(1:2,8:10,18:20,22:25,31:34)]
+par(mfrow=c(1,1))
+RadChart(nt,"Matura MT Script Capitals","black","firebrick",Vec="NTree")
+#dev.copy(device=jpeg,filename="OrangeUni.jpeg",width=800,height=800);
+#dev.off()
+```
+
+
+
+```{r}
+par(mfrow=c(1,1))
+Age=Orange$circumference[1:7]
+par(mfrow=c(1,1))
+RadChart(Age,"Rockwell Extra Bold","black","red",Vec="Circumference")
+#dev.copy(device=jpeg,filename="OrangeUni.jpeg",width=800,height=800);
+#dev.off()
+```
+
+```{r}
+par(mfrow=c(2,2))
+RadChart(Orange[1:8,2:4],"Eras Demi ITC","black","forestgreen")
+#dev.copy(device=jpeg,filename="OrangeBi.jpeg",width=800,height=800);
+#dev.off()
+```
+
+```{r}
+par(mfrow=c(1,1))
+RadChart(Orange[c(1:2,5:7,9:11),2:4],"Jokerman","black",MV="Orange Dataset")
+#dev.copy(device=jpeg,filename="OrangeMulti.jpeg",width=800,height=800);
+#dev.off()
+```
+
+#### Dataset Iris. It is the Edgar Anderson's Iris Data (it has information about the measures about four feature of the three species of genus Iris)
+
+The vector of this dataset was got through sample function using 10 values
+
+```{r}
+data(iris)
+iris$ASepal=iris$Sepal.Length*iris$Sepal.Width
+iris$APetal=iris$Petal.Length*iris$Petal.Width
+```
+
+```{r}
+knitr::kable(
+  head(iris), 
+  caption = "Iris dataset with calculated areas"
+)
+```
+
+
+```{r}
+width=sample(iris$Sepal.Width,10)
+par(mfrow=c(1,1))
+RadChart(width,"Garamond","deepskyblue3","darkgreen",Vec="width")
+#dev.copy(device=jpeg,filename="IrisUni.jpeg",width=800,height=800);
+#dev.off()
+```
+
+```{r}
+par(mfrow=c(2,2))
+RadChart(iris[1:10,1:4],"Book Antiqua","blue4","darkgoldenrod")
+#dev.copy(device=jpeg,filename="IrisBi.jpeg",width=800,height=800);
+#dev.off()
+```
+
+```{r}
+par(mfrow=c(1,1))
+colnames(iris)=c("LSepal","WSepal","LPetal","WPetal","Species","ASepal","APetal")
+RadChart(iris[7:10,c(1:4,6:7)],"Pristina","blue4",MV="Iris Dataset")
+#dev.copy(device=jpeg,filename="IrisMulti.jpeg",width=800,height=800);
+#dev.off()
+```
+
+#### Dataset mtcars (it has information about Motor Trend Car Road Tests)
+
+The rownames of this dataset could be long to be used as axis label; therefore, they were abbreviate using the function called as the method used XD.
+
+```{r}
+data(mtcars);
+rownames(mtcars)=abbreviate(rownames(mtcars))
+```
+
+```{r}
+knitr::kable(
+head(mtcars), 
+  caption = "Mtcars dataset"
+)
+```
+
+
+```{r}
+HorsePower=mtcars$hp[7:24]
+```
+
+```{r}
+par(mfrow=c(1,1))
+RadChart(HorsePower,"Javanese Text","black","indianred4",Vec="Horse Power")
+#dev.copy(device=jpeg,filename="MtcarsUni.jpeg",width=800,height=800);
+#dev.off()
+```
+
+```{r}
+par(mfrow=c(2,2))
+RadChart(mtcars[1:8,1:4],"Tahoma","black","brown")
+#dev.copy(device=jpeg,filename="MtcarsBi.jpeg",width=800,height=800);
+#dev.off()
+```
+
+```{r}
+par(mfrow=c(1,1))
+RadChart(mtcars[c(1,8,15),1:6],"Old English Text MT","red",MV="Mtcars Dataset")
+#dev.copy(device=jpeg,filename="MtcarsMulti.jpeg",width=800,height=800);
+#dev.off()
+```
+
