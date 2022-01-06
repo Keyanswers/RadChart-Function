@@ -16,7 +16,8 @@ knitr::opts_chunk$set(echo = FALSE, error= TRUE, warning=FALSE)
 RadChart offers three different ways to plot radar charts. First, the plot vector values option has a mandatory argument (Vec) that specifies the main title. 
 The second option allows for the plotting of multiple radar charts using data frames, with the graphic function par and parameter mfrow (to set the rows and columns). 
 In the above options, col1 and col2 are required; however, in the third option, col2 must be absent, because the colors are automatically supplied. 
-The last option presents a radar chart with a minimum of three variables, samples, or stations. For the multivariate option of RadChart (third option), the argument “MV” is mandatory, which provides the main title.
+The last option presents a radar chart with a minimum of three variables, samples, or stations. For the multivariate option of RadChart (third option), 
+the argument “MV” is mandatory, which provides the main title.
 
 ### Function Arguments
 
@@ -27,7 +28,9 @@ The last option presents a radar chart with a minimum of three variables, sample
 * Vec: It is an exclusive and mandatory argument for plotting radar charts from vectors. It provides the main title for the chart.
 * MV: For the multivariate RadChart version it is an exclusive and mandatory argument which provides the main title.
 
-Note: When it runs empty, the RadChart function returns the error “the argument df is missing, with no default value default”; however, with this argument, the function works as expected.
+Note: When it runs empty, the RadChart function returns the error “the argument df is missing, with no default value default”; however, 
+with this argument, the function works as expected. 
+
 Below are examples of different radar charts generated from the data sets which are available as examples in the global environment of R.
 
 ### Loading data to plotting
