@@ -13,7 +13,10 @@ knitr::opts_chunk$set(echo = FALSE, error= TRUE, warning=FALSE)
 
 # RadChart
 
-RadChart offers three different ways to plot radar charts. First, the plot vector values option has a mandatory argument (Vec) that specifies the main title. The second option allows for the plotting of multiple radar charts using data frames, with the graphic function par and parameter mfrow (to set the rows and columns). In the above options, col1 and col2 are required; however, in the third option, col2 must be absent, because the colors are automatically supplied. The last option presents a radar chart with a minimum of three variables, samples, or stations. For the multivariate option of RadChart (third option), the argument “MV” is mandatory, which provides the main title.
+RadChart offers three different ways to plot radar charts. First, the plot vector values option has a mandatory argument (Vec) that specifies the main title. 
+The second option allows for the plotting of multiple radar charts using data frames, with the graphic function par and parameter mfrow (to set the rows and columns). 
+In the above options, col1 and col2 are required; however, in the third option, col2 must be absent, because the colors are automatically supplied. 
+The last option presents a radar chart with a minimum of three variables, samples, or stations. For the multivariate option of RadChart (third option), the argument “MV” is mandatory, which provides the main title.
 
 ### Function Arguments
 
