@@ -13,20 +13,19 @@ knitr::opts_chunk$set(echo = FALSE, error= TRUE, warning=FALSE)
 
 # RadChart
 
-RadChart function provides three different ways to plot radar charts. The first option allows plot vector values and has a mandatory argument "Vec" that provides the main title. The second option provides a way to plot multiple radar charts from data tables, whereby the graphic function par could be useful together with the argument mfrow (to set the rows and columns of the composed figure). Those above options require the use of col1 and col2 arguments; however, in the third option, col2 must be absent, because the colors are provided automatically. This last option has "MV" as a mandatory argument that determines the main title, and provides a single radar chart with at least three variables, samples, or stations. 
+RadChart offers three different ways to plot radar charts. First, the plot vector values option has a mandatory argument (Vec) that specifies the main title. The second option allows for the plotting of multiple radar charts using data frames, with the graphic function par and parameter mfrow (to set the rows and columns). In the above options, col1 and col2 are required; however, in the third option, col2 must be absent, because the colors are automatically supplied. The last option presents a radar chart with a minimum of three variables, samples, or stations. For the multivariate option of RadChart (third option), the argument “MV” is mandatory, which provides the main title.
 
 ### Function Arguments
 
-* df =  It is the data frame with stations in columns and the variables in rows. Also, this argument could be a vector.
-* Ftext = Selected font for the labels, numbers, and titles. 
-* col1 = Selected color for radar chart grid.
-* col2 = Selected color for filling the polygons got by dots union, this argument is unused with the multivariate version of RadChart function.
-* Vec = This is an argument exclusive and mandatory to do radar charts from vectors, it provides the main title. 
-* MV = This argument is an exclusive and mandatory of the multivariate version of this function, and provides the main title.
+* df: This argument is a data frame with stations in columns and variables in rows; in addition, it can be a vector.
+* Ftext: Font for the labels, numbers, and titles.
+* col1: Color of the grid.
+* col2: Color of polygons, this argument does not hold in the multivariate version of RadChart.
+* Vec: It is an exclusive and mandatory argument for plotting radar charts from vectors. It provides the main title for the chart.
+* MV: For the multivariate RadChart version it is an exclusive and mandatory argument which provides the main title.
 
-Note: The RadChart function shows an error "the argument "df" is absent, no default value in r" when it runs empty; however, the function works correctly.
-
-The following lines are examples of the different radar chart got from the datasets available as examples in the global environment of r.
+Note: When it runs empty, the RadChart function returns the error “the argument df is missing, with no default value default”; however, with this argument, the function works as expected.
+Below are examples of different radar charts generated from the data sets which are available as examples in the global environment of R.
 
 ### Loading data to plotting
 
@@ -34,8 +33,7 @@ The following lines are examples of the different radar chart got from the datas
 
 data(OrchardSprays)
 
-Here was created the vector using few data of decrease column of OrchardSprays data set.
-
+In this example, a vector was created using six values from the decrease column.
 par(mfrow=c(1,1))
 decrease=OrchardSprays$decrease[1:6]
 decrease
@@ -56,7 +54,7 @@ RadChart(OrchardSprays[c(1:2,9:11),1:3],"Malgun Gothic","black",MV="OrchardSpray
 
 #### Dataset Orange (it has data about Growth of Orange Trees)
 
-In this step to show the vector option the first column of Orange dataset was converted from factor to numeric.
+As a simple example of the vector option, the first column from the Orange dataset has been converted from a factor to a numeric.
 
 data(Orange)
 Orange$NTree=as.numeric(as.character(Orange$Tree))
@@ -87,11 +85,13 @@ RadChart(Orange[c(1:2,5:7,9:11),2:4],"Jokerman","black",MV="Orange Dataset")
 
 #### Dataset Iris. It is the Edgar Anderson's Iris Data (it has information about the measures about four feature of the three species of genus Iris)
 
-The vector of this dataset was got through sample function using 10 values
+Iris dataset with calculated areas
 
 data(iris)
 iris$ASepal=iris$Sepal.Length*iris$Sepal.Width
 iris$APetal=iris$Petal.Length*iris$Petal.Width
+
+Sample function was used to get a vector for this dataset using a set of 10 values from Sepal.Width
 
 width=sample(iris$Sepal.Width,10)
 par(mfrow=c(1,1))
@@ -112,7 +112,7 @@ RadChart(iris[7:10,c(1:4,6:7)],"Pristina","blue4",MV="Iris Dataset")
 
 #### Dataset mtcars (it has information about Motor Trend Car Road Tests)
 
-The rownames in this dataset can be too long to use as axis labels; therefore, they were abbreviated using the function abbreviate.
+As the rownames in this dataset can be too long to represent axis labels, they were abbreviated with the function abbreviate.
 
 data(mtcars)
 rownames(mtcars)=abbreviate(rownames(mtcars))
