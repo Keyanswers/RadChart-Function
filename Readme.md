@@ -1,31 +1,27 @@
 
 # RadChart Function
 
-RadChart offers three different ways to plot radar charts. First, the plot vector values option has a mandatory argument (Vec) that specifies the main title. 
-The second option allows for the plotting of multiple radar charts using data frames, with the graphic function par and parameter mfrow (to set the rows and columns). 
-In the above options, col1 and col2 are required; however, in the third option, col2 must be absent, because the colors are automatically supplied. 
-The last option presents a radar chart with a minimum of three variables, samples, or stations. For the multivariate option of RadChart (third option), 
-the argument "MV" is mandatory, which provides the main title.
+RadChart offers three different ways to plot radar charts. First, the plot vector values option has a mandatory argument (Vec) that specifies the main title. The second option allows for the plotting of multiple radar charts using data frames, with the graphic function par and parameter mfrow (to set the rows and columns).
+In the above options, col1 and col2 are required; however, in the third option, col2 must be absent, because the colors are automatically supplied. The last option presents a radar chart with a minimum of three variables, samples, or stations. For the multivariate option of RadChart, the argument "MV" is mandatory, which provides the main title.
 
 ### Function Arguments
 
-* df: This argument is a data frame with stations in columns and variables in rows; in addition, it can be a vector.
-* Ftext: Font for the labels, numbers, and titles.
+* df: This argument is a data frame with stations in columns and variables in rows; it can also be a vector.
+* Ftext: Font for labels, numbers, and titles.
 * col1: Color of the grid.
-* col2: Color of polygons, this argument does not hold in the multivariate version of RadChart.
+* col2: This argument provides the color of polygons, but it does not hold in the multivariate version of RadChart.
 * Vec: It is an exclusive and mandatory argument for plotting radar charts from vectors. It provides the main title for the chart.
 * MV: For the multivariate RadChart version it is an exclusive and mandatory argument which provides the main title.
 
-Note: When it runs empty, the RadChart function returns the error "the argument df is missing, with no default value default"; however, 
-with this argument, the function works as expected. 
+Note:When it runs empty, the RadChart function returns the error that the argument df is missing, with no default value; however, with this argument, the function works as expected. 
 
-Below are examples of different radar charts generated from the data sets which are available as examples in the global environment of R.
+Below are examples of different radar charts generated from the data sets available as examples in the global environment of R.
 
 ### Loading data to plotting
 
 #### Dataset OrchardSprays (it has data of Potency of Orchard Sprays)
 
-In this example, a vector was created using six values from the decrease column.
+In this example, a vector was created using six values from the column labeled "decrease."
 
 ```{r}
 data(OrchardSprays)
@@ -58,9 +54,9 @@ RadChart(OrchardSprays[c(1:2,9:11),1:3],"Malgun Gothic","black",MV="OrchardSpray
 
 ```
 
-#### Dataset Orange (it has data about Growth of Orange Trees)
+#### Dataset Orange (It has data about the growth of orange trees)
 
-As a simple example of the vector option, the first column from the Orange dataset has been converted from a factor to a numeric.
+As a simple example of the vector option, the first column from the Orange dataset has been converted from a factor to numeric.
 
 ```{r}
 data(Orange)
@@ -75,7 +71,6 @@ par(mfrow=c(1,1))
 RadChart(nt,"Matura MT Script Capitals","black","firebrick",Vec="NTree")
 #dev.copy(device=jpeg,filename="OrangeUni.jpeg",width=800,height=800);
 #dev.off()
-
 ```
 
 ```{r}
@@ -101,9 +96,9 @@ RadChart(Orange[c(1:2,5:7,9:11),2:4],"Jokerman","black",MV="Orange Dataset")
 #dev.off()
 ```
 
-#### Dataset Iris. It is the Edgar Anderson's Iris Data (it has information about the measures about four feature of the three species of genus Iris)
+#### This is the Iris dataset (Edgar Anderson data). It contains data about four features of three species of the Iris genus Dataset Iris.
 
-Iris dataset with calculated areas
+The Iris dataset with calculated areas
 
 ```{r}
 data(iris)
@@ -111,7 +106,7 @@ iris$ASepal=iris$Sepal.Length*iris$Sepal.Width
 iris$APetal=iris$Petal.Length*iris$Petal.Width
 ```
 
-Sample function was used to get a vector for this dataset using a set of 10 values from Sepal.Width
+A sample function was used to get a vector for this dataset using a set of 10 values from Sepal.Width
 
 ```{r}
 width=sample(iris$Sepal.Width,10)
@@ -140,9 +135,7 @@ RadChart(iris[7:10,c(1:4,6:7)],"Pristina","blue4",MV="Iris Dataset")
 
 As the rownames in this dataset can be too long to represent axis labels, they were abbreviated with the function abbreviate.
 
-
 ```{r}
-
 data(mtcars)
 rownames(mtcars)=abbreviate(rownames(mtcars))
 
