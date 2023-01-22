@@ -96,7 +96,7 @@ RadChart(Orange[c(1:2,5:7,9:11),2:4],"Jokerman","black",MV="Orange Dataset")
 #dev.off()
 ```
 
-#### This is the Iris dataset (Edgar Anderson data). It contains data about four features of three species of the Iris genus Dataset Iris.
+#### This is the Iris dataset (Edgar Anderson data). It contains data about four features of three species of the Iris genus dataset Iris.
 
 The Iris dataset with calculated areas
 
