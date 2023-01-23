@@ -15,6 +15,7 @@ RadChart = function(df,Ftext,col1,col2,Vec,MV){
   loadfonts(device = "win",quiet = TRUE)
   
   col1 = ifelse(missing(col1),"black", col1)
+  Ftext = ifelse(missing(Ftext), "Times New Roman", Ftext)
   
   if (is.null(dim(df))){
     
