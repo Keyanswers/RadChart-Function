@@ -1,23 +1,20 @@
 
 # RadChart Function
 
-RadChart offers three different ways to plot radar charts. First, the plot vector values option has a mandatory argument (Vec) that specifies the main title. The second option allows for the plotting of multiple radar charts using data frames, with the graphic function par and parameter mfrow (to set the rows and columns).
-In the above options, col1 and col2 are required; however, in the third option, col2 must be absent, because the colors are automatically supplied. The last option presents a radar chart with a minimum of three variables, samples, or stations. For the multivariate option of RadChart, the argument "MV" is mandatory, which provides the main title.
+RadChart offers three different methods for plotting radar charts. Firstly, the 'plot vector values' option requires a mandatory argument ('Vec') specifying the main title. The second option allows for the plotting of multiple radar charts using data frames, utilizing the 'par' graphic function and the 'mfrow' parameter (to set the rows and columns).
 
-### Function Arguments
+In the aforementioned options, 'col1' and 'col2' are required. However, in the third option, 'col2' must be absent because colors are automatically supplied. The last option presents a radar chart with a minimum of three variables, samples, or stations. For the multivariate option of RadChart, the 'MV' argument is mandatory, providing the main title.
 
-* df: This argument is a data frame with stations in columns and variables in rows; it can also be a vector.
+## Function Arguments
+* df: This argument is a data frame with stations in columns and variables in rows, or it can be a vector.
 * Ftext: Font for labels, numbers, and titles.
 * col1: Color of the grid.
-* col2: This argument provides the color of polygons, but it does not hold in the multivariate version of RadChart.
-* Vec: It is an exclusive and mandatory argument for plotting radar charts from vectors. It provides the main title for the chart.
-* MV: For the multivariate RadChart version it is an exclusive and mandatory argument which provides the main title.
+* col2: This argument provides the color of polygons but is not applicable in the multivariate version of RadChart.
+* Vec: An exclusive and mandatory argument for plotting radar charts from vectors, providing the main title for the chart.
+* MV: For the multivariate RadChart version, it is an exclusive and mandatory argument providing the main title.
+Note: When run empty, the RadChart function returns an error stating that the argument 'df' is missing, with no default value. However, with this argument, the function works as expected.
 
-Note:When it runs empty, the RadChart function returns the error that the argument df is missing, with no default value; however, with this argument, the function works as expected. 
-
-Below are examples of different radar charts generated from the data sets available as examples in the global environment of R.
-
-### Loading data to plotting
+Below are examples of different radar charts generated from the datasets available as examples in the global environment of R.
 
 #### Dataset OrchardSprays (it has data of Potency of Orchard Sprays)
 
@@ -56,7 +53,7 @@ RadChart(OrchardSprays[c(1:2,9:11),1:3],"Malgun Gothic","black",MV="OrchardSpray
 
 #### Dataset Orange (It has data about the growth of orange trees)
 
-As a simple example of the vector option, the first column from the Orange dataset has been converted from a factor to numeric.
+As a simple example of the vector option, consider converting the first column of the Orange dataset from a factor to numeric.
 
 ```{r}
 data(Orange)
@@ -106,7 +103,7 @@ iris$ASepal=iris$Sepal.Length*iris$Sepal.Width
 iris$APetal=iris$Petal.Length*iris$Petal.Width
 ```
 
-A sample function was used to get a vector for this dataset using a set of 10 values from Sepal.Width
+A sample function was employed to extract a vector from the Iris dataset, utilizing a set of 10 values from the Sepal.Width column
 
 ```{r}
 width=sample(iris$Sepal.Width,10)
@@ -133,7 +130,7 @@ RadChart(iris[7:10,c(1:4,6:7)],"Pristina","blue4",MV="Iris Dataset")
 
 #### Dataset mtcars (it has information about Motor Trend Car Road Tests)
 
-As the rownames in this dataset can be too long to represent axis labels, they were abbreviated with the function abbreviate.
+As the row names in this dataset were potentially too long to serve as axis labels, they were abbreviated using the abbreviate function.
 
 ```{r}
 data(mtcars)
